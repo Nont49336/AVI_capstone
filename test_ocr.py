@@ -16,6 +16,9 @@ for root,dirs,files in os.walk(path_to_files):
             with open("first_res.txt","a",encoding="utf-8") as myfile:
                 myfile.write("detector type "+str(i)+":"+text)
 
+
+# base line : accuracy tesseract focus on wrong character >>> analyse why ???
+# next step : data prep from the analysis
 # https://nanonets.com/blog/ocr-with-tesseract/ tesseract ocr
 # https://medium.com/super-ai-engineer/%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%83%E0%B8%8A%E0%B9%89-tesseract-%E0%B8%97%E0%B8%B3-ocr-%E0%B8%A0%E0%B8%B2%E0%B8%A9%E0%B8%B2%E0%B9%84%E0%B8%97%E0%B8%A2-94e5c5863ae5 tesseract ocr
 # https://stackoverflow.com/questions/44619077/pytesseract-ocr-multiple-config-options
