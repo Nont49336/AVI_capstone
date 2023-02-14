@@ -4,9 +4,9 @@ from pytesseract import Output
 import numpy as np
 from PIL import ImageFont, ImageDraw, Image
 
-pytesseract.pytesseract.tesseract_cmd = r'C:\Users\UNNA\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
+# pytesseract.pytesseract.tesseract_cmd = r'C:\Users\UNNA\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
 
-img = cv2.imread('image.jpg')
+img = cv2.imread('./first_license/22031800000207204010111.jpg')
 
 psm = 4
 dir = pytesseract.image_to_data(img, config=f'--psm {psm}', lang='tha', output_type=Output.DICT)
@@ -15,7 +15,7 @@ n_boxes = len(dir['text'])
 res_img = img
 for i in range(n_boxes):
     (x, y, w, h) = (dir['left'][i], dir['top'][i], dir['width'][i], dir['height'][i])
-    cv2.rectangle(res_img, (x, y), (x + w, y + h), (0, 255, 0), 1)
+    cv2.rectangle(res_img, (x, y), (x + w, y + h), (0, 0, 0), 3)
     
     print(f"text{i}: {dir['text'][i]}")
     
@@ -26,7 +26,7 @@ for i in range(n_boxes):
     draw.text((x, y-h), dir['text'][i], font = font, fill = (0,0,255))
     res_img = np.array(res_img)
     cv2.imwrite(f'res_image_{i}.jpg', res_img)
-
+ 
 #cv2.imwrite('res_img.jpg', res_img)
 
 full_text = "".join([str(i) for i in dir['text']])
