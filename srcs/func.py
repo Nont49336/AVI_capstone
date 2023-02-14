@@ -6,7 +6,7 @@ from PIL import ImageFont, ImageDraw, Image
 import numpy as np
 import argparse
 
-#  need to set the structure of the folders 
+#  folder structure
 # Input
 # folder
 # |--img1.jpg
@@ -18,15 +18,22 @@ import argparse
 # |--img1.jpg
 # |--img2.jpg
 # |--img3.jpg
+
 def plate_analyzer(src):
+    # single file handling
     if (src.endswith(".jpg") or src.endswith(".png")):
-        print(src)
-        return print("test img finish")
+        dir = pytesseract.image_to_data(src, config=f'--psm 6',lang='tha',output_type=Output.DICT)
+        if (dir == None):
+            return print("can't detect plate and character")
+        else:
+            return print(dir['left'],dir['top'],dir['width'],dir['height'],dir['text'])
     else:
+        #directory handling
         for root,dirs,files in os.walk(src):
             for file in files:
-                img = cv2.imread(os.path.join(root,file)) 
+                img = cv2.imread(os.path.join(root,file))
         dir = pytesseract.image_to_data(img, config=f'--psm 4', lang='tha', output_type=Output.DICT)
+        text_marker(dir['left'],dir['top'],dir['width'],dir['height'],dir['text'])
         n_boxes = len(dir['text'])
         res_img = img
         for i in range(n_boxes):
@@ -40,13 +47,14 @@ def plate_analyzer(src):
             draw.text((x, y-h), dir['text'][i], font = font, fill = (0,0,255))
             res_img = np.array(res_img)
         cv2.imwrite(f'res_image_{i}.jpg', res_img)
-    
 
     # full_text = "".join([str(i) for i in dir['text']])
     # print(f"full text: {full_text}")
     # cv2.imshow('res_image', res_img)
     # cv2.waitKey(0)
-
+def text_marker(left,top,width,height,text=None):
+    
+    return None
 if __name__ == "__main__":
     # print("run mains")
     parser = argparse.ArgumentParser()
@@ -54,4 +62,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
     path = args.path
     plate_analyzer(path)
-    # plate_analyzer("")
