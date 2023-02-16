@@ -1,5 +1,5 @@
 from func import *
 
 print("hello world")
-exit()
+print("test git pull")
 #test conflict
