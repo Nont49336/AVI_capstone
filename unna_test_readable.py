@@ -53,7 +53,7 @@ class Tesseract:
                 font = ImageFont.truetype(fontpath,16)  #h*2) #16)
                 draw = ImageDraw.Draw(res_img)
                 
-                draw.text((x, y-h), dir['text'][i], font = font, fill = (0,0,255))
+                draw.text((x, y-5), dir['text'][i], font = font, fill = (0,0,255))
                 res_img = np.array(res_img)
             ##################################################################################################################
             print("\nCheck Text Shape")
@@ -64,7 +64,7 @@ class Tesseract:
                     print(f"Original Image: ")
                     print(f"path: {path}")
                     print(f"text{i}: {dir['text'][i]}")
-                    print(f"  word_num: {dir['word_num'][i]}")
+                    print(f"  word_num: {len(dir['text'][i])}")  ##print(f"  word_num: {dir['word_num'][i]}")
                     print(f"  w: {dir['width'][i]}")
                     print(f"  h: {dir['height'][i]}")
                     print(f"  Crop Image: ")
