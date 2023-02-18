@@ -62,11 +62,12 @@ class Tesseract:
             for i in range(n_boxes):
                 if (dir['text'][i]):    
                     print(f"Original Image: ")
-                    print(f"path: {path}")
-                    print(f"text{i}: {dir['text'][i]}")
-                    print(f"  word_num: {len(dir['text'][i])}")  ##print(f"  word_num: {dir['word_num'][i]}")
-                    print(f"  w: {dir['width'][i]}")
-                    print(f"  h: {dir['height'][i]}")
+                    print(f"Original Path: {path}")
+                    print(f"  Text Letter: {dir['text'][i]}")
+                    print(f"  Index Array: {i}")
+                    print(f"  Text Number: {len(dir['text'][i])}")  ##print(f"  word_num: {dir['word_num'][i]}")
+                    print(f"  Width:  {dir['width'][i]}")
+                    print(f"  Height: {dir['height'][i]}")
                     print(f"  Crop Image: ")
                     n_textbox += 1
                 # elif (not dir['text'][i]: # elif (dir['text'][i] == ""):
@@ -76,12 +77,12 @@ class Tesseract:
             word_data = "".join([str(i) for i in dir['text']])
             word_string = dir_string['text']
             print(f"Original Image: ")
-            print(f"path: {path}")
-            if (n_textbox == 0): print("Readable: No")
-            else:                print("Readable: Yes")
-            print(f"word_data:   {word_data}")
-            print(f"word_string: {word_string}")
-            print(f"Box Image:")
+            print(f"Original Path: {path}")
+            print(f"  word_data:   {word_data}")
+            print(f"  word_string: {word_string}")
+            if (n_textbox == 0): print("  Readable: No")
+            else:                print("  Readable: Yes")
+            print(f"  Box Image:")
             cv2.imshow('res_image', res_img)
 
             print(f"\nDirectory of image_to_data:  \n {dir}")
