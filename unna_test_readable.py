@@ -30,6 +30,7 @@ class Tesseract:
         if (src.endswith(".jpg") or src.endswith(".png")):
             dir = pytesseract.image_to_data(src, config=f'--psm {self.psm} --oem {self.oem}',lang=self.lang,output_type=Output.DICT)
             if (dir == None):
+                
                 return print("can't detect plate and character")
             else:
                 return print(dir['left'],dir['top'],dir['width'],dir['height'],dir['text'])
@@ -39,6 +40,7 @@ class Tesseract:
                 for file in files:
                     img = cv2.imread(os.path.join(root,file))
             dir = pytesseract.image_to_data(img, config=f'--psm 4', lang='tha', output_type=Output.DICT)
+            print(dir)
             # text_roi = (dir['left'],dir['top'],dir['width'],dir['height'],dir['text'])
             # text_marker()
             # text_marker(dir)
@@ -111,4 +113,3 @@ cv2.waitKey(0)
 #     path = args.path
 #     detector = Tesseract(6,"tha",3)
 #     detector.analyze(path)
-
