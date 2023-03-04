@@ -97,7 +97,7 @@ class Tesseract:
         return None
 
 
-path = "./first_processed"
+path = ".././first_processed"   #"./first_processed"
 
 tesseract = Tesseract(psm=6,lang="tha",oem=3)
 tesseract.analyze(path)

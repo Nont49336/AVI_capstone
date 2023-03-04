@@ -6,7 +6,8 @@ from PIL import ImageFont, ImageDraw, Image
 
 # pytesseract.pytesseract.tesseract_cmd = r'C:\Users\UNNA\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
 
-img = cv2.imread('./first_license/22031800000207204010111.jpg')
+path = '.././first_license/22031800000207204010111.jpg'       # './first_license/22031800000207204010111.jpg'
+img = cv2.imread(path)
 
 psm = 4
 dir = pytesseract.image_to_data(img, config=f'--psm {psm}', lang='tha', output_type=Output.DICT)
