@@ -2,7 +2,7 @@ import os
 import cv2
 import shutil
 #  this is the program to extract the uncropped image to cropped image
-path = "./first_license"
+path = ".././first_license"
 count = 0
 for root,dirs,files in os.walk(path):
     for file in files: 
@@ -15,4 +15,4 @@ for root,dirs,files in os.walk(path):
         else:
             print("not included")
 print("processed:",count)
-print("in processed folder:",len(os.listdir('first_processed')))
+print("in processed folder:",len(os.listdir('.././first_processed')))

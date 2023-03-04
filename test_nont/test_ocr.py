@@ -2,7 +2,7 @@ import cv2
 import pytesseract
 import os
 
-path_to_files =  "./first_processed"
+path_to_files =  ".././first_processed"
 res_txt_file = "first_res.txt"
 # loop through all file in the folder
 for root,dirs,files in os.walk(path_to_files):
