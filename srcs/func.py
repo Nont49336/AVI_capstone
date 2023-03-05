@@ -64,8 +64,8 @@ class Tesseract:
             # directory handling
             time_stamp  = datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
             # log file initialization
-            readable_logger = create_logger("readable_logger",log_file=time_stamp+"_readadble")
-            text_logger = create_logger("text_logger",log_file=time_stamp+"text")
+            readable_logger = create_logger("readable_logger",log_file="../"+time_stamp+"_readadble")
+            text_logger = create_logger("text_logger",log_file="../"+time_stamp+"_text")
             # initialize file header
             readable_logger.info(["path","psm","oem","readable","readable(img2data)","readable(img2string)","width","height"])
             text_logger.info(["path","psm","oem","text_index","text_len","text","width","height","ref_img_path"])
@@ -79,17 +79,17 @@ class Tesseract:
                     res_img = img
                     for i in range(n_boxes):
                         (x, y, w, h) = (dir['left'][i], dir['top'][i], dir['width'][i], dir['height'][i])
-                        cv2.rectangle(res_img, (x, y), (x + w, y + h), (0, 0, 0), 3)
+                        cv2.rectangle(res_img, (x, y), (x + w, y + h), (0, 0, 0), 1)
                         print(f"text{i}: {dir['text'][i]}")
                         res_img = Image.fromarray(res_img)
                         fontpath = "./angsana.ttc" # thai font
-                        font = ImageFont.truetype(fontpath,16)  #h*2) #16)
+                        font = ImageFont.truetype(fontpath,22)  #h*2) #16)
                         draw = ImageDraw.Draw(res_img)
                         
                         draw.text((x, y-h), dir['text'][i], font = font, fill = (0,0,255))
                         res_img = np.array(res_img)
-                        os.makedirs("/text_result/p{self.psm}o{self.oem}/{file}",exist_ok=True)
-                        cv2.imwrite(f'./text_result/p{self.psm}o{self.oem}/{file}/res_image_{i}.jpg', res_img)
+                        os.makedirs(f"../text_result/p{self.psm}o{self.oem}/{file}",exist_ok=True)
+                        cv2.imwrite(f"../text_result/p{self.psm}o{self.oem}/{file}/res_image_{i}.jpg", res_img)
                     n_textbox = 0
                     for i in range(n_boxes):
                         if (dir['text'][i]):  
@@ -101,11 +101,11 @@ class Tesseract:
                             print(f"  Width:  {dir['width'][i]}")
                             print(f"  Height: {dir['height'][i]}")
                             # text_logger.info(["path","psm","oem","text_index","text_len","text","width","height","ref_img_path"])
-                            text_logger.info([path,self.psm,self.oem,i,len(dir['text'][i]),dir['text'][i],dir['width'][i],dir['height'][i],"text_result/p{self.psm}o{self.oem}/{file}/res_image_{i}.jpg"])
+                            text_logger.info([path,self.psm,self.oem,i,len(dir['text'][i]),dir['text'][i],dir['width'][i],dir['height'][i],f"text_result/p{self.psm}o{self.oem}/{file}/res_image_{i}.jpg"])
                             n_textbox += 1
                         # elif (not dir['text'][i]: # elif (dir['text'][i] == ""):
                     print("\nCheck Text Readable")
-                    dir_string = pytesseract.image_to_string(img, config=f'--psm 4', lang='tha', output_type=Output.DICT)
+                    dir_string = pytesseract.image_to_string(img, config=f'--psm {self.psm} --oem {self.oem}', lang='tha', output_type=Output.DICT)
                     word_data = "".join([str(i) for i in dir['text']])
                     word_string = dir_string['text']
                     print(f"Original Image: ")
@@ -114,15 +114,17 @@ class Tesseract:
                     print(f"  word_string: {word_string}")
                     if (n_textbox == 0): 
                         # (["path","psm","oem","readable","readable(img2data)","width","height","readable(img2string)"])
-                        os.makedirs("readabiltiy/unreadable/"+"p"+str(self.psm)+"o"+str(self.oem),exist_ok=True)
-                        shutil.copy(path,"readabiltiy/unreadable/"+"p"+str(self.psm)+"o"+str(self.oem)+"/"+file)
+                        os.makedirs("../readability/unreadable/"+"p"+str(self.psm)+"o"+str(self.oem),exist_ok=True)
+                        shutil.copy(os.path.join(root,file),"../readability/unreadable/"+"p"+str(self.psm)+"o"+str(self.oem)+"/"+file)
                         readable_logger.info([path,self.psm,self.oem,0,word_data,word_string,img.shape[1],img.shape[0]])
                         print("  Readable: No")
                     else:            
-                        os.makedirs("readabiltiy/readable/"+"p"+str(self.psm)+"o"+str(self.oem),exist_ok=True)    
-                        shutil.copy(os.path.join(root,file),"readabiltiy/readable/"+"p"+str(self.psm)+"o"+str(self.oem)+"/"+file)
+                        os.makedirs("../readability/readable/"+"p"+str(self.psm)+"o"+str(self.oem),exist_ok=True)    
+                        shutil.copy(os.path.join(root,file),"../readability/readable/"+"p"+str(self.psm)+"o"+str(self.oem)+"/"+file)
                         readable_logger.info([path,self.psm,self.oem,1,word_data,word_string,img.shape[1],img.shape[0]])
                         print("  Readable: Yes")
+            print("CHECK READABLE FILE:",time_stamp+"_readadble")
+            print("CHECK TEXT FILE:",time_stamp+"_text")
         # full_text = "".join([str(i) for i in dir['text']])
         # print(f"full text: {full_text}")
         # cv2.imshow('res_image', res_img)
@@ -145,11 +147,11 @@ class Tesseract:
 # - Width (int)
 # - Height (int)
 # - Box Image (crop image ตัวอักษร)
-if __name__ == "__main__":
-    # print("run mains")
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-p","--path",help="path to file or folder")
-    args = parser.parse_args()
-    path = args.path
-    detector = Tesseract(6,"tha",3)
-    detector.analyze(path,"readable")
+# if __name__ == "__main__":
+#     # print("run mains")
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument("-p","--path",help="path to file or folder")
+#     args = parser.parse_args()
+#     path = args.path
+#     detector = Tesseract(6,"tha",3)
+#     detector.analyze(path)

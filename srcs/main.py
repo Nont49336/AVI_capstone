@@ -1,10 +1,11 @@
-from func import *
-
+from func import Tesseract
+import os
 # start initialization
 
-path2file = "first_processed"
-
+path2file = ".././first_processed"
+# if os.path.isdir():
+#     assert 
 for i in [1,3]:
-    for j in range(0,14):
+    for j in range(4,13):
         model = Tesseract(psm=j,lang="tha",oem=i)
         model.analyze(path2file)
