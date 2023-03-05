@@ -62,7 +62,7 @@ class Tesseract:
                 return print(dir['left'],dir['top'],dir['width'],dir['height'],dir['text'])
         else:
             # directory handling
-            time_stamp  = datetime.now().strftime("%d/%m/%Y-%H:%M:%S")
+            time_stamp  = datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
             # log file initialization
             readable_logger = create_logger("readable_logger",log_file=time_stamp+"_readadble")
             text_logger = create_logger("text_logger",log_file=time_stamp+"text")
@@ -88,6 +88,7 @@ class Tesseract:
                         
                         draw.text((x, y-h), dir['text'][i], font = font, fill = (0,0,255))
                         res_img = np.array(res_img)
+                        os.makedirs("/text_result/p{self.psm}o{self.oem}/{file}",exist_ok=True)
                         cv2.imwrite(f'./text_result/p{self.psm}o{self.oem}/{file}/res_image_{i}.jpg', res_img)
                     n_textbox = 0
                     for i in range(n_boxes):
@@ -113,10 +114,12 @@ class Tesseract:
                     print(f"  word_string: {word_string}")
                     if (n_textbox == 0): 
                         # (["path","psm","oem","readable","readable(img2data)","width","height","readable(img2string)"])
+                        os.makedirs("readabiltiy/unreadable/"+"p"+str(self.psm)+"o"+str(self.oem),exist_ok=True)
                         shutil.copy(path,"readabiltiy/unreadable/"+"p"+str(self.psm)+"o"+str(self.oem)+"/"+file)
                         readable_logger.info([path,self.psm,self.oem,0,word_data,word_string,img.shape[1],img.shape[0]])
                         print("  Readable: No")
-                    else:                
+                    else:            
+                        os.makedirs("readabiltiy/readable/"+"p"+str(self.psm)+"o"+str(self.oem),exist_ok=True)    
                         shutil.copy(os.path.join(root,file),"readabiltiy/readable/"+"p"+str(self.psm)+"o"+str(self.oem)+"/"+file)
                         readable_logger.info([path,self.psm,self.oem,1,word_data,word_string,img.shape[1],img.shape[0]])
                         print("  Readable: Yes")

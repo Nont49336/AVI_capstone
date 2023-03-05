@@ -4,7 +4,7 @@ from func import *
 
 path2file = "first_processed"
 
-for i in range(0,4):
+for i in [1,3]:
     for j in range(0,14):
-        model = Tesseract(psm=j,str="tha",oem=i)
-        Tesseract.analyze(path2file)
+        model = Tesseract(psm=j,lang="tha",oem=i)
+        model.analyze(path2file)
