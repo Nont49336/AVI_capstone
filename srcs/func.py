@@ -52,7 +52,7 @@ class Tesseract:
         self.oem = oem
         
 
-    def analyze(self,src,log_name=None):
+    def analyze(self,src):
     # single file handling
         if (src.endswith(".jpg") or src.endswith(".png")):
             dir = pytesseract.image_to_data(src, config=f'--psm {self.psm} --oem {self.oem}',lang=self.lang,output_type=Output.DICT)
@@ -68,14 +68,12 @@ class Tesseract:
             text_logger = create_logger("text_logger",log_file=time_stamp+"text")
             # initialize file header
             readable_logger.info(["path","psm","oem","readable","readable(img2data)","readable(img2string)","width","height"])
-            text_logger.info(["path","psm","oem","text","width","height"])
+            text_logger.info(["path","psm","oem","text_index","text_len","text","width","height","ref_img_path"])
             # end log file initialization
-            logging.basicConfig(filename=str(time_stamp)+f"{log_name}.csv",filemode="a",level=logging.DEBUG)
-            logging.root.handlers[0].setFormatter(CsvFormatter())
-            logger = logging.getLogger(__name__)
             for root,dirs,files in os.walk(src):
                 for file in files:
-                    img = cv2.imread(os.path.join(root,file))
+                    path = os.path.join(root,file)
+                    img = cv2.imread(path)
                     dir = pytesseract.image_to_data(img, config=f'--psm {self.psm} --oem {self.oem}', lang='tha', output_type=Output.DICT)
                     n_boxes = len(dir['text'])
                     res_img = img
@@ -90,10 +88,10 @@ class Tesseract:
                         
                         draw.text((x, y-h), dir['text'][i], font = font, fill = (0,0,255))
                         res_img = np.array(res_img)
-                    cv2.imwrite(f'res_image_{i}.jpg', res_img)
+                        cv2.imwrite(f'./text_result/p{self.psm}o{self.oem}/{file}/res_image_{i}.jpg', res_img)
                     n_textbox = 0
                     for i in range(n_boxes):
-                        if (dir['text'][i]):    
+                        if (dir['text'][i]):  
                             print(f"Original Image: ")
                             print(f"Original Path: {path}")
                             print(f"  Text Letter: {dir['text'][i]}")
@@ -101,7 +99,8 @@ class Tesseract:
                             print(f"  Text Number: {len(dir['text'][i])}")  ##print(f"  word_num: {dir['word_num'][i]}")
                             print(f"  Width:  {dir['width'][i]}")
                             print(f"  Height: {dir['height'][i]}")
-                            print(f"  Crop Image: ")
+                            # text_logger.info(["path","psm","oem","text_index","text_len","text","width","height","ref_img_path"])
+                            text_logger.info([path,self.psm,self.oem,i,len(dir['text'][i]),dir['text'][i],dir['width'][i],dir['height'][i],"text_result/p{self.psm}o{self.oem}/{file}/res_image_{i}.jpg"])
                             n_textbox += 1
                         # elif (not dir['text'][i]: # elif (dir['text'][i] == ""):
                     print("\nCheck Text Readable")
@@ -114,20 +113,17 @@ class Tesseract:
                     print(f"  word_string: {word_string}")
                     if (n_textbox == 0): 
                         # (["path","psm","oem","readable","readable(img2data)","width","height","readable(img2string)"])
-                        shutil.copy(os.path.join(root,file),"readabiltiy\unreadable"+file)
-                        readable_logger.info([os.path.join(root,file),self.psm,self.oem,0,word_data,word_string,img.shape[1],img.shape[0]])
+                        shutil.copy(path,"readabiltiy/unreadable/"+"p"+str(self.psm)+"o"+str(self.oem)+"/"+file)
+                        readable_logger.info([path,self.psm,self.oem,0,word_data,word_string,img.shape[1],img.shape[0]])
                         print("  Readable: No")
                     else:                
-                        shutil.copy(os.path.join(root,file),"readabiltiy\readable"+file)
-                        readable_logger.info([os.path.join(root,file),self.psm,self.oem,1,word_data,word_string,img.shape[1],img.shape[0]])
+                        shutil.copy(os.path.join(root,file),"readabiltiy/readable/"+"p"+str(self.psm)+"o"+str(self.oem)+"/"+file)
+                        readable_logger.info([path,self.psm,self.oem,1,word_data,word_string,img.shape[1],img.shape[0]])
                         print("  Readable: Yes")
         # full_text = "".join([str(i) for i in dir['text']])
         # print(f"full text: {full_text}")
         # cv2.imshow('res_image', res_img)
-        # cv2.waitKey(0)
-    def char_marker(self,img,dir):
-
-        return None  #shoud return array of image    
+        # cv2.waitKey(0)   
 
 #     11:28 UNNA Excel อ่านได้ไม่ได้
 
