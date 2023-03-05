@@ -39,7 +39,7 @@ class Tesseract:
             for root,dirs,files in os.walk(src):
                 for file in files:
                     img = cv2.imread(os.path.join(root,file))
-            dir = pytesseract.image_to_data(img, config=f'--psm 4', lang='tha', output_type=Output.DICT)
+            dir = pytesseract.image_to_data(img, config=f'--psm {self.psm} --oem {self.oem} ', lang='tha', output_type=Output.DICT)
             print(dir)
             # text_roi = (dir['left'],dir['top'],dir['width'],dir['height'],dir['text'])
             # text_marker()
@@ -63,14 +63,14 @@ class Tesseract:
             n_textbox = 0
             for i in range(n_boxes):
                 if (dir['text'][i]):    
-                    print(f"Original Image: ")
+                    # print(f"Original Image: ")
                     print(f"Original Path: {path}")
                     print(f"  Text Letter: {dir['text'][i]}")
                     print(f"  Index Array: {i}")
                     print(f"  Text Number: {len(dir['text'][i])}")  ##print(f"  word_num: {dir['word_num'][i]}")
                     print(f"  Width:  {dir['width'][i]}")
                     print(f"  Height: {dir['height'][i]}")
-                    print(f"  Crop Image: ")
+                    # print(f"  Crop Image: ")
                     n_textbox += 1
                 # elif (not dir['text'][i]: # elif (dir['text'][i] == ""):
 
@@ -86,7 +86,6 @@ class Tesseract:
             else:                print("  Readable: Yes")
             print(f"  Box Image:")
             cv2.imshow('res_image', res_img)
-
             print(f"\nDirectory of image_to_data:  \n {dir}")
             print(f"\nDirectory of image_to_string:\n {dir_string}")
             #cv2.imwrite(f'res_image_{i}.jpg', res_img)
