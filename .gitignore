@@ -1,2 +1,5 @@
 /AVI_capstone
 srcs\testcsv.py
+*.csv
+/readability
+/text_result
