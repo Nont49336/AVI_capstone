@@ -3,4 +3,8 @@ srcs\testcsv.py
 *.csv
 /readability
 /text_result
+<<<<<<< HEAD
 /csvfile
+=======
+/dataset
+>>>>>>> 63be9c39f637df97378dd2bc165473451152ea60
