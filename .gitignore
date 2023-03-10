@@ -3,4 +3,4 @@ srcs\testcsv.py
 *.csv
 /readability
 /text_result
-dataset/original_image
+/dataset

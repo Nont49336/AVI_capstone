@@ -14,10 +14,10 @@ df = pd.read_excel(path_oriexcel)
 n_df = len(df)
 
 count = 0
-for i in range(2771):
-    for j in range(i+1, 2771):
+for i in range(n_df): #2771):
+    for j in range(i+1,n_df): #2771):
         if (df.at[i,'3digit']==df.at[j,'3digit']) and (df.at[i,'4digit']==df.at[j,'4digit']):
-            print(f"{i} \t{j} \t{df.at[i,'3digit']} \t{df.at[i,'4digit']}")
+            print(f"{i} \t{j} \t{df.at[i,'3digit']} \t{df.at[j,'3digit']} \t{df.at[i,'4digit']} \t{df.at[j,'4digit']} \t{df.at[i,'Province']} \t{df.at[j,'Province']}")
             count+=1
 print(count)
 
