@@ -41,7 +41,7 @@ def cv2_imread_win(img_filepath):
     return cv2.imdecode(numpyarray, cv2.IMREAD_UNCHANGED)
 
 
-for scale in [1.05,1.25,2.50,3.75,5]:
+for scale in [1.05,1.25,2.50,3.75,5,7.5,8.75]:
     print(scale)
     cv_logger = create_logger("opencvlogger","scale,"+str(scale))
     cv_logger.info(["path","detected","ref"])
@@ -66,3 +66,4 @@ for scale in [1.05,1.25,2.50,3.75,5]:
                     cv_logger.info([path,1,f"cv_result/scale{scale}/{i}.jpg"])
                     i+=1
     print(f"At scale {scale} : plate not found {plate_not_found} from {len(os.listdir(file_path))}")
+    plate_not_found = 0
