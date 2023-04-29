@@ -8,7 +8,5 @@ srcs\testcsv.py
 /image_identify
 /first_license
 /first_processed
-/first_hundred
-*.jpg
-*.png
+
 
