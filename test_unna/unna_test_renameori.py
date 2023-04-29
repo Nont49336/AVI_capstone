@@ -22,6 +22,7 @@ for root,dirs,files in os.walk(path_oriimage):
                 registpv = str(df.at[index,'Province'])
                 newname  = registid + '_' + registpv + '.jpg'   #registid + '.jpg'
                 print(newname)
+                
                 shutil.copy(os.path.join(root,file),os.path.join(path_rename,newname))
                 count+=1
                 break

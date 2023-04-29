@@ -54,13 +54,13 @@ class Tesseract:
 
     def analyze(self,src):
     # single file handling
-        if (src.endswith(".jpg") or src.endswith(".png")):
+        if (src.endswith(".jpg") or src.endswith(".png") or not os.path.isdir(src)):
             dir = pytesseract.image_to_data(src, config=f'--psm {self.psm} --oem {self.oem}',lang=self.lang,output_type=Output.DICT)
             if (dir == None):
                 return print("can't detect plate and character")
             else:
                 return print(dir['left'],dir['top'],dir['width'],dir['height'],dir['text'])
-        else:
+        elif(os.path.isdir(src)):
             # directory handling
             time_stamp  = datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
             # log file initialization
