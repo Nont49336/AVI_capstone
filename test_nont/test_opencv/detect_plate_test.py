@@ -5,6 +5,7 @@ import logging
 import csv
 import io
 
+
 class CsvFormatter(logging.Formatter):
     def __init__(self):
         super().__init__()
@@ -62,8 +63,10 @@ for scale in [1.05,1.25,2.50,3.75,5,7.5,8.75]:
                 for x,y,w,h in plates:
                     os.makedirs(f"../cv_result/scale{scale}/",exist_ok=True)
                     res_img = cv2.rectangle(img1,(x,y),((x+w),(y+h)),(255,0,0), 2)
-                    cv2.imwrite(f"../cv_result/scale{scale}/{i}.jpg",res_img)
-                    cv_logger.info([path,1,f"cv_result/scale{scale}/{i}.jpg"])
+                    # cv2.imwrite(f"../cv_result/scale{scale}/{i}.jpg",res_img)
+                    cv2.imencode(".jpg",res_img)[1].tofile(f"../cv_result/scale{scale}/{file}")
+                    cv_logger.info([path,1,f"cv_result/scale{scale}/{file}.jpg"])
                     i+=1
+                    
     print(f"At scale {scale} : plate not found {plate_not_found} from {len(os.listdir(file_path))}")
     plate_not_found = 0
