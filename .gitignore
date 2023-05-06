@@ -8,5 +8,5 @@ srcs\testcsv.py
 /image_identify
 /first_license
 /first_processed
-
+/test_nont/cv_result/*
 

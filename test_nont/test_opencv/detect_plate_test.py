@@ -30,7 +30,7 @@ def create_logger(name,log_file,level=logging.DEBUG):
 
 
 cascade_file = "../.././cascade/license_cascade.xml"
-file_path = "../.././first_hundred/"
+file_path = "C:/Users/Surface/Desktop/AVI_capstone/image_identify/"
 
 cascade_filter = cv2.CascadeClassifier(cascade_file)
 plate_not_found = 0
