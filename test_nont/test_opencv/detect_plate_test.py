@@ -41,7 +41,7 @@ def cv2_imread_win(img_filepath):
     numpyarray = np.asarray(bytes, dtype=np.uint8)
     return cv2.imdecode(numpyarray, cv2.IMREAD_UNCHANGED)
 
-minNeighbor = 3 #waiting for the best scale result
+
 for scale in [1.05,1.25,2.50,3.75,5,7.5,8.75]:
     print(scale)
     cv_logger = create_logger("opencvlogger","scale,"+str(scale))
@@ -53,7 +53,7 @@ for scale in [1.05,1.25,2.50,3.75,5,7.5,8.75]:
             img1 = img.copy()
             plates = cascade_filter.detectMultiScale(img,
                                                     scaleFactor = scale,
-                                                    minNeighbors= minNeighbor 
+                                                    minNeighbors=3
                                                     )
 
             if len(plates) == 0:
