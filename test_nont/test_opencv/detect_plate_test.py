@@ -30,7 +30,7 @@ def create_logger(name,log_file,level=logging.DEBUG):
 
 
 cascade_file = "../.././cascade/license_cascade.xml"
-file_path = "C:/Users/Surface/Desktop/AVI_capstone/image_identify/"
+file_path = "../.././dataset/image_identify" #"C:/Users/Surface/Desktop/AVI_capstone/image_identify/"  #"../.././first_hundred/"
 
 cascade_filter = cv2.CascadeClassifier(cascade_file)
 plate_not_found = 0
@@ -65,7 +65,7 @@ for scale in [1.05,1.25,2.50,3.75,5,7.5,8.75]:
                     res_img = cv2.rectangle(img1,(x,y),((x+w),(y+h)),(255,0,0), 2)
                     # cv2.imwrite(f"../cv_result/scale{scale}/{i}.jpg",res_img)
                     cv2.imencode(".jpg",res_img)[1].tofile(f"../cv_result/scale{scale}/{file}")
-                    cv_logger.info([path,1,f"cv_result/scale{scale}/{file}.jpg"])
+                    cv_logger.info([path,1,f"cv_result/scale{scale}/{file}"])
                     i+=1
                     
     print(f"At scale {scale} : plate not found {plate_not_found} from {len(os.listdir(file_path))}")
